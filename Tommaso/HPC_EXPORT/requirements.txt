@@ -1,0 +1,11 @@
+# Core — required
+torch>=2.0.0
+torchvision>=0.15.0
+scikit-learn>=1.0.0
+pandas>=1.5.0
+numpy>=1.23.0
+Pillow>=9.0.0
+
+# Optional — falls back gracefully if missing
+fvcore          # better FLOP counting (estimate_flops in utils.py)
+wilds           # official WILDS metrics (evaluate.run_wilds_official only)
