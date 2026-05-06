@@ -78,7 +78,9 @@ def train(
 
     use_weighted = config.get("use_weighted_sampler", False)
     train_loader = get_dataloader("train", config, weighted_sampler=use_weighted)
-    criterion    = nn.CrossEntropyLoss()
+    criterion    = nn.CrossEntropyLoss(
+        label_smoothing=config.get("label_smoothing", 0.0)
+    )
 
     if optimizer is None:
         from models import get_param_groups

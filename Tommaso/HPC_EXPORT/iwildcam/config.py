@@ -29,8 +29,10 @@ CONFIG = {
     # --- optimizer ---
     "lr":               1e-4,             # backbone trainable blocks (T and S)
     "lr_head":          1e-3,             # head (always S)
-    "weight_decay":     1e-4,
+    "weight_decay":     1e-3,
     "scheduler":        "cosine",         # cosine | step | none
+    "label_smoothing":  0.1,              # 0.0 disables smoothing
+    "head_dropout":     0.3,              # 0.0 disables dropout
 
     # --- class imbalance ---
     "use_weighted_sampler": True,

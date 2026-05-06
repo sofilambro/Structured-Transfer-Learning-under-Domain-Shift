@@ -63,9 +63,11 @@ def build_model(
     model = models.resnet50(weights=weights)
 
     # Fresh head (always S: Xavier init, fully trainable)
-    model.fc = nn.Linear(model.fc.in_features, num_classes)
-    nn.init.xavier_uniform_(model.fc.weight)
-    nn.init.zeros_(model.fc.bias)
+    head = nn.Linear(model.fc.in_features, num_classes)
+    nn.init.xavier_uniform_(head.weight)
+    nn.init.zeros_(head.bias)
+    dropout_p = float(config.get("head_dropout", 0.0))
+    model.fc = nn.Sequential(nn.Dropout(p=dropout_p), head) if dropout_p > 0 else head
 
     block_modules = _get_block_modules(model)
     for block_name, mode in zip(BLOCKS, partition):
