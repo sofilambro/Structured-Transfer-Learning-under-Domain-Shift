@@ -7,7 +7,7 @@ CONFIG = {
     # --- data ---
     "data_dir":         os.path.join(_ROOT_DIR, "data"),
     "dataset":          "iwildcam",
-    "dataset_mode":     "mini",              # "mini" | "full"  ← switch here
+    "dataset_mode":     "full",              # "mini" | "full"  ← switch here
     "num_classes":      182,                 # max(y)+1; same for mini and full
     "image_size":       224,
 
