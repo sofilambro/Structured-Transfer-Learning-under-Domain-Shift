@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "structured-transfer"
+version = "1.0.0"
+description = "Monotonic Frozen/Fine-tuned/Scratch backbone partitions for transfer learning under domain shift"
+readme = "README.md"
+requires-python = ">=3.10"
+# Table form rather than the PEP 639 SPDX string ("MIT"), which requires
+# setuptools >= 77; this form works on the setuptools >= 64 declared above.
+license = { text = "MIT" }
+
+authors = [
+    { name = "Sofia Lambro",       email = "sofia.lambro@studbocconi.it" },
+    { name = "Alessandro Lombardi", email = "alessandro.lombardi2@studbocconi.it" },
+    { name = "Marco Riva",         email = "marco.riva4@studbocconi.it" },
+    { name = "Katia Russo",        email = "katia.russo@studbocconi.it" },
+    { name = "Tommaso Tarantino",  email = "tommaso.tarantino@studbocconi.it" },
+]
+
+keywords = ["transfer-learning", "domain-shift", "fine-tuning", "wilds", "resnet", "wideresnet"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Floors, not pins: the archived runs used torch 2.x with CUDA 12.4. Install the
+# torch build matching your CUDA version first, then this package.
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "numpy>=1.23.0",
+    "pandas>=1.5.0",
+    "scikit-learn>=1.0.0",
+    "Pillow>=9.0.0",
+    "matplotlib>=3.6.0",
+]
+
+[project.optional-dependencies]
+# fvcore gives the FLOP counts quoted in the paper (4.11 G inference for
+# ResNet50); without it, utils.estimate_flops falls back to a coarse constant.
+flops = ["fvcore>=0.1.5"]
+# Official WILDS metrics, for Evaluator.run_wilds_official cross-checks.
+wilds = ["wilds>=2.0.0"]
+# WordNet, for deriving the TinyImageNet semantic class split.
+wordnet = ["nltk>=3.8"]
+# Downloading iWildCam metadata and streaming the mini image set.
+download = ["requests>=2.28.0"]
+dev = [
+    "pytest>=7.0.0",
+    "fvcore>=0.1.5",
+    "nltk>=3.8",
+    "requests>=2.28.0",
+]
+
+[project.urls]
+Repository = "https://github.com/sofilambro/Transfer_Learning_AI_project"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Model-construction tests instantiate ResNet50 and WRN-28-10 on CPU; a few
+# seconds each, no dataset and no GPU needed.
+addopts = "-q"
+markers = [
+    "slow: builds a full network; still CPU-only, but seconds rather than milliseconds",
+]
